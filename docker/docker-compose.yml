@@ -1,0 +1,39 @@
+version: '3.8'
+
+name: cocinando_software  # Nombre del proyecto en Docker
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: cocinando_software-postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ../docker/pgdata:/var/lib/postgresql/data  # Persistencia de datos
+
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: cocinando_software-django
+    restart: always
+    volumes:
+      - ../:/app  # Sincronizar archivos con el host
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - DJANGO_SETTINGS_MODULE=cocinando_software.settings
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}  # Nombre del servicio en docker-compose
+
+volumes:
+  pgdata:
