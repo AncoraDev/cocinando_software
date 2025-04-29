@@ -1,6 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
 <h2>Bienvenido, {{ cliente.nombre }}</h2>
-
-<ul>
-    <li><a href="{% url 'listado_clientes' %}">Ver listado de clientes</a></li>
-    <li><a href="{% url 'logout_cliente' %}">Cerrar sesión</a></li>
-</ul>
+<p>Desde aquí podrás acceder a los módulos disponibles del CRM.</p>
+{% endblock %}

@@ -1,0 +1,100 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CRM{% endblock %}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+
+        .topbar {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar .user-info {
+            font-size: 14px;
+        }
+
+        .navbar {
+            background-color: #495057;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        .navbar a.active {
+            background-color: #007bff;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 2px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        a.button.delete {
+            background-color: #dc3545;
+        }
+
+        a.button.edit {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div>CRM Interno</div>
+        <div class="user-info">
+            {{ cliente.nombre }} | <a href="{% url 'logout_cliente' %}" style="color: #ffc107; text-decoration: none;">Cerrar sesión</a>
+        </div>
+    </div>
+    <div class="navbar">
+        <a href="{% url 'dashboard_cliente' %}" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{% url 'listado_clientes' %}" class="{% if active == 'clientes' %}active{% endif %}">Clientes</a>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -29,15 +29,24 @@ def dashboard_cliente(request):
         return redirect('login_cliente')
     
     cliente = Cliente.objects.get(id=cliente_id)
-    return render(request, 'clientes/dashboard.html', {'cliente': cliente})
+    return render(request, 'clientes/dashboard.html', {
+        'cliente': cliente,
+        'active': 'dashboard'
+    })
 
 def listado_clientes(request):
     cliente_id = request.session.get('cliente_id')
     if not cliente_id:
         return redirect('login')
 
+    cliente = Cliente.objects.get(id=cliente_id)
     clientes = Cliente.objects.all()
-    return render(request, 'clientes/listado.html', {'clientes': clientes})
+    return render(request, 'clientes/listado.html', {
+        'clientes': clientes,
+        'cliente': cliente,
+        'active': 'clientes'
+    })
+
 
 def crear_cliente(request):
     if request.method == 'POST':
