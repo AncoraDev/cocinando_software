@@ -1,45 +1,51 @@
-from django.shortcuts import render, redirect
-from .models import Cliente
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
+from .models import Cliente
 
+# Mostrar formulario de login
 def login_cliente(request):
     return render(request, 'clientes/login.html')
 
+# Procesar el login del cliente
 def procesar_login_cliente(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        try:
-            cliente = Cliente.objects.get(email=email)
-            if cliente.password == password:
-                request.session['cliente_id'] = cliente.id
-                return redirect('/clientes/dashboard/')
-            else:
-                messages.error(request, 'Contraseña incorrecta')
-        except Cliente.DoesNotExist:
-            messages.error(request, 'No existe ningún cliente con ese email')
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard_cliente')
+        else:
+            messages.error(request, 'Email o contraseña incorrectos')
 
-    return redirect('/')  # Volver al login si algo falla
+    return redirect('login')
 
+# Dashboard privado del cliente
+@login_required
 def dashboard_cliente(request):
-    cliente_id = request.session.get('cliente_id')
-    if not cliente_id:
-        return redirect('login_cliente')
-    
-    cliente = Cliente.objects.get(id=cliente_id)
+    try:
+        cliente = Cliente.objects.get(user=request.user)
+    except Cliente.DoesNotExist:
+        return redirect('login')
+
     return render(request, 'clientes/dashboard.html', {
         'cliente': cliente,
         'active': 'dashboard'
     })
 
+# Listado de todos los clientes
+@login_required
 def listado_clientes(request):
-    cliente_id = request.session.get('cliente_id')
-    if not cliente_id:
+    try:
+        cliente = Cliente.objects.get(user=request.user)
+    except Cliente.DoesNotExist:
         return redirect('login')
 
-    cliente = Cliente.objects.get(id=cliente_id)
     clientes = Cliente.objects.all()
     return render(request, 'clientes/listado.html', {
         'clientes': clientes,
@@ -47,7 +53,8 @@ def listado_clientes(request):
         'active': 'clientes'
     })
 
-
+# Crear un nuevo cliente
+@login_required
 def crear_cliente(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
@@ -56,42 +63,65 @@ def crear_cliente(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        Cliente.objects.create(
-            nombre=nombre,
-            razon_social=razon_social,
-            cif=cif,
+        user = User.objects.create_user(
+            username=email,
             email=email,
-            password=password
+            password=password,
+            first_name=nombre
         )
+
+        Cliente.objects.create(
+            user=user,
+            razon_social=razon_social,
+            cif=cif
+        )
+
         return redirect('listado_clientes')
 
     return render(request, 'clientes/formulario.html', {'modo': 'crear'})
 
+# Editar un cliente existente
+@login_required
 def editar_cliente(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
 
     if request.method == 'POST':
-        cliente.nombre = request.POST.get('nombre')
-        cliente.razon_social = request.POST.get('razon_social')
-        cliente.cif = request.POST.get('cif')
-        cliente.email = request.POST.get('email')
-        cliente.password = request.POST.get('password')
+        nombre = request.POST.get('nombre')
+        razon_social = request.POST.get('razon_social')
+        cif = request.POST.get('cif')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Actualizar datos del User asociado
+        cliente.user.first_name = nombre
+        cliente.user.username = email
+        cliente.user.email = email
+        if password:
+            cliente.user.set_password(password)
+        cliente.user.save()
+        update_session_auth_hash(request, cliente.user) 
+
+        # Actualizar datos de Cliente
+        cliente.razon_social = razon_social
+        cliente.cif = cif
         cliente.save()
+
         return redirect('listado_clientes')
 
-    return render(request, 'clientes/formulario.html', {'cliente': cliente, 'modo': 'editar'})
+    return render(request, 'clientes/formulario.html', {
+        'cliente': cliente,
+        'modo': 'editar'
+    })
 
-
+# Eliminar un cliente
+@login_required
 def eliminar_cliente(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
-    cliente.delete()
+    cliente.user.delete()  # Eliminamos también el User asociado automáticamente
     return redirect('listado_clientes')
 
+# Logout del cliente
+@login_required
 def logout_cliente(request):
-
-    print("Cerrando sesión del cliente")
-    try:
-        del request.session['cliente_id']
-    except KeyError:
-        pass
-    return redirect('/')
+    logout(request)
+    return redirect('login')

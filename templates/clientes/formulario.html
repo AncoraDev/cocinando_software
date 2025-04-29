@@ -73,19 +73,24 @@
             {% csrf_token %}
 
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" value="{{ cliente.nombre|default_if_none:'' }}">
+            <input type="text" id="nombre" name="nombre"
+                   value="{% if cliente %}{{ cliente.user.first_name }}{% endif %}" required>
 
             <label for="razon_social">Razón Social:</label>
-            <input type="text" id="razon_social" name="razon_social" value="{{ cliente.razon_social|default_if_none:'' }}">
+            <input type="text" id="razon_social" name="razon_social"
+                   value="{{ cliente.razon_social|default_if_none:'' }}">
 
             <label for="cif">CIF:</label>
-            <input type="text" id="cif" name="cif" value="{{ cliente.cif|default_if_none:'' }}">
+            <input type="text" id="cif" name="cif"
+                   value="{{ cliente.cif|default_if_none:'' }}" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ cliente.email|default_if_none:'' }}">
+            <input type="email" id="email" name="email"
+                   value="{% if cliente %}{{ cliente.user.email }}{% endif %}" required>
 
             <label for="password">Contraseña:</label>
-            <input type="text" id="password" name="password" value="{{ cliente.password|default_if_none:'' }}">
+            <input type="password" id="password" name="password"
+                   placeholder="{% if modo == 'editar' %}Dejar en blanco para mantener la misma{% else %}Contraseña{% endif %}">
 
             <button type="submit">
                 {% if modo == 'editar' %}Guardar cambios{% else %}Crear cliente{% endif %}

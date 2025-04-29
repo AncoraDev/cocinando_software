@@ -17,10 +17,10 @@
     <tbody>
     {% for c in clientes %}
         <tr>
-            <td>{{ c.nombre }}</td>
+            <td>{{ c.user.first_name }}</td>
             <td>{{ c.razon_social }}</td>
             <td>{{ c.cif }}</td>
-            <td>{{ c.email }}</td>
+            <td>{{ c.user.email }}</td>
             <td>
                 <a href="{% url 'editar_cliente' c.id %}" class="button edit">Editar</a>
                 <a href="{% url 'eliminar_cliente' c.id %}" class="button delete">Eliminar</a>
