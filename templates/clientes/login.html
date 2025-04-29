@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Cliente</title>
+</head>
+<body>
+    <h2>Acceso</h2>
+
+    <form method="POST" action="{% url 'procesar_login_cliente' %}" id="loginForm">
+        {% csrf_token %}
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br><br>
+
+        <label for="password">Contraseña:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
