@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Clientes</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 2px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        a.button.delete {
+            background-color: #dc3545;
+        }
+
+        a.button.edit {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h2>Listado de Clientes</h2>
+    <a href="{% url 'crear_cliente' %}" class="button">+ Nuevo Cliente</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Razón Social</th>
+                <th>CIF</th>
+                <th>Email</th>
+                <th>Utilidades</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for c in clientes %}
+            <tr>
+                <td>{{ c.nombre }}</td>
+                <td>{{ c.razon_social }}</td>
+                <td>{{ c.cif }}</td>
+                <td>{{ c.email }}</td>
+                <td>
+                    <a href="{% url 'editar_cliente' c.id %}" class="button edit">Editar</a>
+                    <a href="{% url 'eliminar_cliente' c.id %}" class="button delete">Eliminar</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">No hay clientes registrados.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{% url 'dashboard_cliente' %}">← Volver al Dashboard</a>
+</body>
+</html>

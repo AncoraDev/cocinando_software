@@ -1,2 +1,6 @@
 <h2>Bienvenido, {{ cliente.nombre }}</h2>
-<a href="{% url 'logout_cliente' %}">Cerrar sesión</a>
+
+<ul>
+    <li><a href="{% url 'listado_clientes' %}">Ver listado de clientes</a></li>
+    <li><a href="{% url 'logout_cliente' %}">Cerrar sesión</a></li>
+</ul>
