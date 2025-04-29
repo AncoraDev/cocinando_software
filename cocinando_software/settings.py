@@ -78,9 +78,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Cargar variables de entorno desde el archivo .env en la carpeta docker
-dotenv_path = Path(__file__).resolve().parent.parent / 'docker' / '.env'
-load_dotenv(dotenv_path=dotenv_path)
+load_dotenv()
 
 # Configuración de la base de datos PostgreSQL
 DATABASES = {
@@ -90,7 +88,7 @@ DATABASES = {
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  # Si no encuentra la variable, usa localhost
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'PORT': os.getenv('POSTGRES_PORT', '5433'),
     }
 }
 

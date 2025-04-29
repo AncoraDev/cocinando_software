@@ -1,0 +1,19 @@
+version: '3.8'
+
+name: cocinando_software  # Nombre del proyecto en Docker
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: cocinando_software-postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: cocinando_software_user
+      POSTGRES_PASSWORD: cocinando_software_pass
+      POSTGRES_DB: cocinando_software_db
+    volumes:
+      - ../docker/pgdata:/var/lib/postgresql/data  # Persistencia de datos
+volumes:
+  pgdata:
