@@ -1,150 +1,25 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}CRM{% endblock %}</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            background-color: #f7f7f7;
-        }
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
 
-        .topbar {
-            background-color: #343a40;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .topbar .user-info {
-            font-size: 14px;
-        }
-
-        .navbar {
-            background-color: #495057;
-            padding: 10px 20px;
-        }
-
-        .navbar a {
-            color: white;
-            margin-right: 15px;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 6px 10px;
-            border-radius: 4px;
-        }
-
-        .navbar a.active {
-            background-color: #007bff;
-        }
-
-        .container {
-            padding: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        a.button {
-            display: inline-block;
-            padding: 6px 12px;
-            margin: 2px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        a.button.delete {
-            background-color: #dc3545;
-        }
-
-        a.button.edit {
-            background-color: #28a745;
-        }
-
-        /* Estilo para formularios */
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 500px;
-            margin: 0 auto;
-        }
-
-        .form-container label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-
-        .form-container input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #218838;
-        }
-
-        .form-container a {
-            display: inline-block;
-            margin-top: 15px;
-            text-align: center;
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .form-container a:hover {
-            text-decoration: underline;
-        }
-
-    </style>
 </head>
-<body>
-    <div class="topbar">
-        <div>CRM Interno</div>
-        <div class="user-info">
-            {{ cliente.nombre }} | <a href="{% url 'logout_cliente' %}" style="color: #ffc107; text-decoration: none;">Cerrar sesión</a>
+<body class="bg-gray-100 font-sans">
+    <div class="bg-gray-800 text-white px-6 py-3 flex justify-between items-center">
+        <div class="text-lg font-bold">CRM Interno</div>
+        <div class="text-sm">
+            {{ cliente.nombre }} |
+            <a href="{% url 'logout_cliente' %}" class="text-yellow-400 hover:underline">Cerrar sesión</a>
         </div>
     </div>
-    <div class="navbar">
-        <a href="{% url 'dashboard_cliente' %}" class="{% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
-        <a href="{% url 'listado_clientes' %}" class="{% if active == 'clientes' %}active{% endif %}">Clientes</a>
+    <div class="bg-gray-700 px-6 py-2">
+        <a href="{% url 'dashboard_cliente' %}" class="text-white font-semibold mr-4 px-2 py-1 rounded hover:bg-blue-600 {% if active == 'dashboard' %}bg-blue-600{% endif %}">Dashboard</a>
+        <a href="{% url 'listado_clientes' %}" class="text-white font-semibold px-2 py-1 rounded hover:bg-blue-600 {% if active == 'clientes' %}bg-blue-600{% endif %}">Clientes</a>
     </div>
-    <div class="container">
+    <div class="p-6">
         {% block content %}{% endblock %}
     </div>
 </body>

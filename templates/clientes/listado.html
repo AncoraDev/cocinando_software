@@ -1,33 +1,35 @@
 {% extends 'base.html' %}
 {% block title %}Listado de Clientes{% endblock %}
 {% block content %}
-<h2>Listado de Clientes</h2>
-<a href="{% url 'crear_cliente' %}" class="button">+ Nuevo Cliente</a>
+<h2 class="text-2xl font-bold mb-4 text-gray-800">Listado de Clientes</h2>
+<a href="{% url 'crear_cliente' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded inline-block mb-4">+ Nuevo Cliente</a>
 
-<table>
+<table class="w-full table-auto border-collapse bg-white shadow-md rounded">
     <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Razón Social</th>
-            <th>CIF</th>
-            <th>Email</th>
-            <th>Utilidades</th>
+        <tr class="bg-gray-100 text-left">
+            <th class="p-3 border">Nombre</th>
+            <th class="p-3 border">Razón Social</th>
+            <th class="p-3 border">CIF</th>
+            <th class="p-3 border">Email</th>
+            <th class="p-3 border">Utilidades</th>
         </tr>
     </thead>
     <tbody>
     {% for c in clientes %}
-        <tr>
-            <td>{{ c.user.first_name }}</td>
-            <td>{{ c.razon_social }}</td>
-            <td>{{ c.cif }}</td>
-            <td>{{ c.user.email }}</td>
-            <td>
-                <a href="{% url 'editar_cliente' c.id %}" class="button edit">Editar</a>
-                <a href="{% url 'eliminar_cliente' c.id %}" class="button delete">Eliminar</a>
+        <tr class="hover:bg-gray-50">
+            <td class="p-3 border">{{ c.user.first_name }}</td>
+            <td class="p-3 border">{{ c.razon_social }}</td>
+            <td class="p-3 border">{{ c.cif }}</td>
+            <td class="p-3 border">{{ c.user.email }}</td>
+            <td class="p-3 border">
+                <a href="{% url 'editar_cliente' c.id %}" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mr-2 text-sm">Editar</a>
+                <a href="{% url 'eliminar_cliente' c.id %}" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">Eliminar</a>
             </td>
         </tr>
     {% empty %}
-        <tr><td colspan="5">No hay clientes registrados.</td></tr>
+        <tr>
+            <td colspan="5" class="p-3 border text-center text-gray-500">No hay clientes registrados.</td>
+        </tr>
     {% endfor %}
     </tbody>
 </table>

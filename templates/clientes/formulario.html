@@ -2,35 +2,50 @@
 {% block title %}{% if modo == 'editar' %}Editar{% else %}Crear{% endif %} Cliente{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2>{% if modo == 'editar' %}Editar{% else %}Crear{% endif %} Cliente</h2>
-    <form method="POST">
+<div class="bg-white p-6 rounded shadow max-w-md mx-auto">
+    <h2 class="text-xl font-semibold text-center mb-6">{% if modo == 'editar' %}Editar{% else %}Crear{% endif %} Cliente</h2>
+    <form method="POST" class="space-y-4">
         {% csrf_token %}
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre"
-               value="{% if cliente %}{{ cliente.user.first_name }}{% endif %}" required>
+        <div>
+            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
+            <input type="text" id="nombre" name="nombre"
+                   value="{% if cliente %}{{ cliente.user.first_name }}{% endif %}"
+                   class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" required>
+        </div>
 
-        <label for="razon_social">Razón Social:</label>
-        <input type="text" id="razon_social" name="razon_social"
-               value="{{ cliente.razon_social|default_if_none:'' }}">
+        <div>
+            <label for="razon_social" class="block text-sm font-medium text-gray-700">Razón Social:</label>
+            <input type="text" id="razon_social" name="razon_social"
+                   value="{{ cliente.razon_social|default_if_none:'' }}"
+                   class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+        </div>
 
-        <label for="cif">CIF:</label>
-        <input type="text" id="cif" name="cif"
-               value="{{ cliente.cif|default_if_none:'' }}" required>
+        <div>
+            <label for="cif" class="block text-sm font-medium text-gray-700">CIF:</label>
+            <input type="text" id="cif" name="cif"
+                   value="{{ cliente.cif|default_if_none:'' }}"
+                   class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" required>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"
-               value="{% if cliente %}{{ cliente.user.email }}{% endif %}" required>
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+            <input type="email" id="email" name="email"
+                   value="{% if cliente %}{{ cliente.user.email }}{% endif %}"
+                   class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300" required>
+        </div>
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password"
-               placeholder="{% if modo == 'editar' %}Dejar en blanco para mantener la misma{% else %}Contraseña{% endif %}">
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña:</label>
+            <input type="password" id="password" name="password"
+                   placeholder="{% if modo == 'editar' %}Dejar en blanco para mantener la misma{% else %}Contraseña{% endif %}"
+                   class="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+        </div>
 
-        <button type="submit">
+        <button type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">
             {% if modo == 'editar' %}Guardar cambios{% else %}Crear cliente{% endif %}
         </button>
     </form>
-
 </div>
 {% endblock %}
