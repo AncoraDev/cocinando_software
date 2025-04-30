@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Página no encontrada{% endblock %}
+{% block content %}
+<div class="text-center py-20">
+    <h1 class="text-5xl font-bold text-gray-800 mb-4">404</h1>
+    <p class="text-lg text-gray-600 mb-6">Oops... No pudimos encontrar la página que buscas.</p>
+    <a href="{% url 'dashboard_cliente' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+        Volver al inicio
+    </a>
+</div>
+{% endblock %}

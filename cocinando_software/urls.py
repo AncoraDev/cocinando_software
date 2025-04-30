@@ -9,3 +9,10 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),  # Si luego hay rutas adicionales
 ]
 
+from django.conf.urls import handler404
+from django.shortcuts import render
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
+handler404 = custom_404
